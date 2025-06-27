@@ -1,0 +1,64 @@
+import random
+
+def hangman():
+    # Predefined list of words
+    words = ["python", "hangman", "developer", "keyboard", "programming"]
+    
+    # Select a random word
+    secret_word = random.choice(words)
+    
+    # Game variables
+    guessed_letters = []
+    max_attempts = 6
+    wrong_attempts = 0
+    
+    print("Welcome to Hangman!")
+    print(f"Guess the word. You have {max_attempts} attempts allowed.")
+    print("The word has", len(secret_word), "letters.\n")
+    
+    while wrong_attempts < max_attempts:
+        # Display the current state of the word
+        display_word = ""
+        for letter in secret_word:
+            if letter in guessed_letters:
+                display_word += letter + " "
+            else:
+                display_word += "_ "
+        
+        print(display_word.strip())
+        
+        # Check if player has won
+        if "_" not in display_word:
+            print("\nCongratulations! You guessed the word:", secret_word)
+            return
+        
+        # Get player's guess
+        guess = input("Guess a letter: ").lower()
+        
+        # Validate input
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter a single letter.")
+            continue
+        
+        if guess in guessed_letters:
+            print("You already guessed that letter. Try again.")
+            continue
+        
+        # Add to guessed letters
+        guessed_letters.append(guess)
+        
+        # Check if guess is correct
+        if guess in secret_word:
+            print("Correct!")
+        else:
+            wrong_attempts += 1
+            print(f"Wrong! You have {max_attempts - wrong_attempts} attempts left.")
+        
+        print()  # Add spacing
+    
+    # If we get here, player lost
+    print(f"\nGame over! The word was: {secret_word}")
+    print("Better luck next time!")
+
+# Start the game
+hangman()
